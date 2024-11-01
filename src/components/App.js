@@ -5,6 +5,7 @@ const App = () => {
   const [count, setCount] = useState(0);
   const [text, setText] = useState("");
   const [todos, setTodos] = useState([]);
+  const [error, setError] = useState(""); // State for input validation error
 
   const memoizedTodoCount = useMemo(() => first.length, [first]);
 
@@ -20,6 +21,9 @@ const App = () => {
     if (text.length > 5) {
       setTodos([...todos, text]);
       setText("");
+      setError(""); // Clear error if successful
+    } else {
+      setError("Skill must be longer than 5 characters."); // Set error message
     }
   };
 
@@ -36,18 +40,14 @@ const App = () => {
       <button id="add-todo-btn" onClick={addNewTodo}>
         Add Todo
       </button>
-
       <hr />
-
       <div id="counter">
         {count}
         <button id="incr-cnt" onClick={incrementCounter}>
           +
         </button>
       </div>
-
       <hr />
-
       <h1>React.memo</h1>
       <input
         id="skill-input"
@@ -58,7 +58,7 @@ const App = () => {
       <button id="skill-btn" onClick={addSkill}>
         Add Skill
       </button>
-
+      {error && <p style={{ color: "red" }}>{error}</p>} {/* Error message */}
       <ul>
         {todos.map((item, index) => (
           <li key={index} id={`skill-${index}`}>
@@ -66,9 +66,7 @@ const App = () => {
           </li>
         ))}
       </ul>
-
       <hr />
-
       <UseMemoComponent count={memoizedTodoCount} />
       <ReactMemoComponent text={text} />
     </div>
